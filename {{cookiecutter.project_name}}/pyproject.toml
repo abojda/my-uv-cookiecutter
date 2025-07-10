@@ -1,0 +1,79 @@
+[project]
+name = "{{ cookiecutter.project_name.lower().replace(' ', '-').replace('_', '-') }}"
+version = "0.1.0"
+description = "{{ cookiecutter.project_description }}"
+readme = "README.md"
+authors = [{ name = "{{ cookiecutter.author_name }}" }]
+requires-python = ">={{ cookiecutter.python_version }}"
+dependencies = []
+
+[dependency-groups]
+dev = []
+
+{% if cookiecutter.add_pytorch == "y" %}
+[project.optional-dependencies]
+cpu = [
+  "torch>=2.7.0",
+  "torchvision>=0.22.0",
+]
+gpu = [
+  "torch>=2.7.0",
+  "torchvision>=0.22.0",
+]
+
+[tool.uv]
+conflicts = [
+  [
+    { extra = "cpu" },
+    { extra = "gpu" },
+  ],
+]
+
+[tool.uv.sources]
+torch = [
+    { index = "torch-cpu", extra = "cpu" },
+    { index = "torch-gpu", extra = "gpu" },
+]
+torchvision = [
+    { index = "torch-cpu", extra = "cpu" },
+    { index = "torch-gpu", extra = "gpu" },
+]
+
+[[tool.uv.index]]
+name = "torch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "torch-gpu"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+{% endif %}
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+#############################
+### Linting configuration ###
+#############################
+[tool.mypy]
+strict = true
+exclude = ["notebooks"]
+
+[tool.ruff]
+target-version = "py{{ cookiecutter.python_version.replace('.', '') }}"
+line-length = 120
+
+[tool.ruff.lint]
+exclude = ["notebooks"]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "UP",     # pyupgrade
+    "ARG001", # unused arguments in functions
+] 

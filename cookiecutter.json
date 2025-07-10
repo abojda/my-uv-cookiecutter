@@ -1,0 +1,8 @@
+{
+    "project_name": "my-python-project",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+    "python_version": ["3.13", "3.12", "3.11", "3.10", "3.9"],
+    "add_pytorch": ["n", "y"],
+    "author_name": "Aleksander Bojda",
+    "project_description": ""
+}
